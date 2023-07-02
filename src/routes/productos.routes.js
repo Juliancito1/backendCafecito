@@ -6,6 +6,7 @@ import {
   obtenerProducto,
   obtenerProductos,
 } from "../controllers/producto.controllers";
+import { check } from "express-validator";
 
 const router = Router();
 
@@ -13,7 +14,17 @@ const router = Router();
 //     res.send('esto es una prueba de la peticion GET a mi backend')
 // })
 
-router.route("/productos").get(obtenerProductos).post(crearProducto);
+router
+  .route("/productos")
+  .get(obtenerProductos)
+  .post(
+    [
+      check("nombreProducto")
+        .notEmpty()
+        .withMessage("El nombre del producto es un dato obligatorio"),
+    ],
+    crearProducto
+  );
 router
   .route("/productos/:id")
   .delete(borrarProducto)
