@@ -21,7 +21,22 @@ router
     [
       check("nombreProducto")
         .notEmpty()
-        .withMessage("El nombre del producto es un dato obligatorio"),
+        .withMessage("El nombre del producto es un dato obligatorio")
+        .isLength({min: 2, max: 100})
+        .withMessage('El nombre del producto debe contener entre 2 y 100 caracteres inclusive'),
+      check("precio")
+        .notEmpty()
+        .withMessage('El precio es un dato obligatorio')
+        .isNumeric()
+        .withMessage('El precio debe ser un número')
+        .custom((value)=>{
+          if(value >= 50 && value < 10000)
+          {
+            return true;
+          }else{
+            throw new Error('El precio debe estar entre 50 y 9999')
+          }
+        })
     ],
     crearProducto
   );
