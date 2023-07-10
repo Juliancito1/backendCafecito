@@ -9,13 +9,15 @@ export const login = async (req, res) => {
     //verificar si el email ya existe
     let usuario = await Usuario.findOne({ email }); //devulve un null
     if (!usuario) {
-      //si el usuario existe
+      //si el usuario no existe
       return res.status(400).json({
         mensaje: "Correo o password invalido - correo",
       });
     }
     // si no es valido el password
-    if (password !== usuario.password) {
+    const passwordValido = bcrypt.compareSync(password,usuario.password); // devuelve un valor booleano
+
+    if (!passwordValido) {
       return res.status(400).json({
         mensaje: "Correo o password invalido - password",
       });
@@ -50,7 +52,7 @@ export const crearUsuario = async (req, res) => {
     }
     //guardamos el nuevo usuario en la BD
     usuario = new Usuario(req.body);
-    const salt = bcrypt.genSalt(10)
+    const salt = bcrypt.genSaltSync(10)
     usuario.password = bcrypt.hashSync(password, salt)
     
     await usuario.save();
