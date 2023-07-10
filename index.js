@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import * as dotenv from 'dotenv'
 import './src/database/dbConnection'
 import productosRouter from './src/routes/productos.routes'
-
+import usuarioRouter from './src/routes/usuarios.routes'
 dotenv.config(); //puedo leer variables de entorno
 //crear una instancia de express
 const app = express();
@@ -25,3 +25,4 @@ app.use(morgan("dev")) //nos da informacion extra en la terminal
 // http://localhost:4000/productos/apicafe/productos
 
 app.use("/apicafe",productosRouter)
+app.use('/apicafe/auth',usuarioRouter)
